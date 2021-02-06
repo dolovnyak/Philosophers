@@ -8,9 +8,12 @@ add_executable(Philosophers
         philo_one/srcs/main.c
         philo_one/srcs/logging.c
         philo_one/srcs/fill_configuration_from_args.c
+        philo_one/srcs/philosopher_live.c
         philo_one/srcs/utilities/string_len.c
         philo_one/srcs/utilities/is_number.c
         philo_one/srcs/utilities/string_to_int.c
+        philo_one/srcs/utilities/timeval_into_size_t.c
+        philo_one/srcs/utilities/get_current_time.c
         )
 
 #set_target_properties(${PROJECT_NAME}

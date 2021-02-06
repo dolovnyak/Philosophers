@@ -20,5 +20,7 @@ int fill_configuration_from_args(int argc, char **argv, t_configuration *configu
 		configuration->number_of_times_each_philosopher_must_eat = string_to_int(argv[5]);
 		configuration->is_number_of_times_each_philosopher_must_eat_on = TRUE;
 	}
+	if (configuration->number_of_philosophers == 0)
+		return (error("at least one philosopher needed"));
 	return (SUCCESS);
 }
