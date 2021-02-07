@@ -37,6 +37,31 @@ void	put_forks(t_philosopher *philosopher)
 	}
 }
 
+void	eat(t_philosopher *philosopher)
+{
+	log_philosopher(philosopher->configuration->start_time, philosopher->number, "is eating");
+	upgraded_usleep(philosopher->configuration->time_to_eat * 1000);
+}
+
+int		is_died_of_hunger(t_philosopher *philosopher, size_t last_time_eating)
+{
+	if (get_current_time() - last_time_eating > philosopher->configuration->time_to_die)
+		return (TRUE);
+	return (FALSE);
+}
+
+void	philosopher_die(t_philosopher *philosopher)
+{
+	log_philosopher(philosopher->configuration->start_time, philosopher->number, "died");
+	philosopher->configuration->exit = TRUE;
+}
+
+void	philosopher_sleep(t_philosopher *philosopher)
+{
+	log_philosopher(philosopher->configuration->start_time, philosopher->number, "is sleeping");
+	upgraded_usleep(philosopher->configuration->time_to_sleep * 1000);
+}
+
 void	*philosopher_live(void *v_philosopher)
 {
 	t_philosopher	*philosopher;
@@ -44,31 +69,26 @@ void	*philosopher_live(void *v_philosopher)
 	
 	philosopher = (t_philosopher *)v_philosopher;
 	last_time_eating = get_current_time();
-	while (1)
+	while (!philosopher->configuration->exit)
 	{
-		printf("delta time: %ld\n", get_current_time() - last_time_eating);
-		printf("time to die %ld\n", philosopher->configuration->time_to_die);
-		if (get_current_time() - last_time_eating > philosopher->configuration->time_to_die)
+		if (is_died_of_hunger(philosopher, last_time_eating))
 		{
-			printf("philo %ld is died\n", philosopher->number);
-			return NULL;
+			philosopher_die(philosopher);
+			return (NULL);
 		}
 		
 		take_forks(philosopher);
-		if (get_current_time() - last_time_eating > philosopher->configuration->time_to_die * 1000)
+		
+		if (is_died_of_hunger(philosopher, last_time_eating))
 		{
-			printf("philo %ld is died\n", philosopher->number);
-			return NULL;
+			philosopher_die(philosopher);
+			put_forks(philosopher);
+			return (NULL);
 		}
-		
-		log_philosopher(philosopher->configuration->start_time, philosopher->number, "is eating");
-		usleep(philosopher->configuration->time_to_eat * 1000);
 		last_time_eating = get_current_time();
-		
+		eat(philosopher);
 		put_forks(philosopher);
-		
-		log_philosopher(philosopher->configuration->start_time, philosopher->number, "is sleeping");
-		usleep(philosopher->configuration->time_to_sleep * 1000);
+		philosopher_sleep(philosopher);
 	}
 	return (NULL);
 }

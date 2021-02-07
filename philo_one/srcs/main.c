@@ -56,11 +56,11 @@ int main(int argc, char **argv)
 	if (!(fill_configuration_from_args(argc, argv, &configuration)))
 		return (error("invalid arguments"));
 	
-	configuration.start_time = get_current_time();
-	configuration.exit = FALSE;
-	
 	if (!(setup_philosophers(&philosophers, &configuration)))
 		return (error("setup philosophers"));
+	
+	configuration.start_time = get_current_time();
+	configuration.exit = FALSE;
 	
 	if (!(launch_philosophers_threads(philosophers, &configuration)))
 		return (error("launch philosophers threads"));

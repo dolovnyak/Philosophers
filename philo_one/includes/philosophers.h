@@ -22,7 +22,7 @@ typedef struct				s_configuration
 	size_t					number_of_times_each_philosopher_must_eat;
 	int						is_number_of_times_each_philosopher_must_eat_on;
 	size_t					start_time;
-	size_t					exit;
+	int						exit;
 }							t_configuration;
 
 typedef struct				s_fork
@@ -48,5 +48,6 @@ void						*philosopher_live(void *v_philosopher);
 void 						log_philosopher(size_t time_start, size_t philosopher_num, const char *message);
 size_t						timeval_to_size_t(struct timeval timeval);
 size_t						get_current_time();
+void						upgraded_usleep(size_t sleep_time);
 
 #endif
