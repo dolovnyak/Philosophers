@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   logging.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 04:26:23 by sbecker           #+#    #+#             */
+/*   Updated: 2021/02/09 04:27:23 by sbecker          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
-#include <stdio.h>
 
 int		error(const char *error_str)
 {
@@ -15,11 +26,10 @@ void	log_philosopher_die(size_t time_start, size_t philosopher_num)
 	struct timeval	timeval;
 	char			str[255];
 	size_t			len;
-	
+
 	ft_bzero(str, 100);
 	gettimeofday(&timeval, NULL);
 	time = get_current_time() - time_start;
-	
 	copy_size_t_to_string(str, time);
 	len = numlen(time);
 	ft_strcpy(str + len, "ms ");
@@ -34,7 +44,8 @@ void	log_philosopher_die(size_t time_start, size_t philosopher_num)
 	write(STDOUT_FILENO, str, string_len(str));
 }
 
-void	log_philosopher(size_t time_start, size_t philosopher_num, const char *message, int exit_flag)
+void	log_philosopher(size_t time_start, size_t philosopher_num,
+		const char *message, int exit_flag)
 {
 	size_t			time;
 	struct timeval	timeval;
@@ -44,7 +55,6 @@ void	log_philosopher(size_t time_start, size_t philosopher_num, const char *mess
 	ft_bzero(str, 100);
 	gettimeofday(&timeval, NULL);
 	time = get_current_time() - time_start;
-	
 	copy_size_t_to_string(str, time);
 	len = numlen(time);
 	ft_strcpy(str + len, "ms ");
@@ -56,7 +66,6 @@ void	log_philosopher(size_t time_start, size_t philosopher_num, const char *mess
 	ft_strcpy(str + len, message);
 	len += string_len(message);
 	ft_strcpy(str + len, "\n");
-	
 	if (exit_flag == TRUE)
 		return ;
 	write(STDOUT_FILENO, str, string_len(str));

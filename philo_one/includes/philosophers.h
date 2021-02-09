@@ -1,7 +1,6 @@
 #ifndef PHILOSOPHERS_H
 #define PHILOSOPHERS_H
 
-#include <stdio.h> //TODO delete
 #include <unistd.h>
 #include <pthread.h>
 #include <stdlib.h>
@@ -21,14 +20,14 @@ typedef struct				s_configuration
 	size_t					time_to_sleep;
 	size_t					number_of_times_each_philosopher_must_eat;
 	size_t					start_time;
-}							t_configuration;
+}							t_conf;
 
 typedef struct				s_philosopher
 {
 	pthread_mutex_t			*first_fork;
 	pthread_mutex_t			*second_fork;
 	size_t					number;
-	t_configuration			*configuration;
+	t_conf					*configuration;
 	size_t					*philosophers_who_eat_n_times;
 	int						*exit;
 }							t_philosopher;
@@ -36,7 +35,7 @@ typedef struct				s_philosopher
 size_t						string_len(const char *s);
 int							is_number(char *str);
 int							string_to_int(const char *str);
-int							fill_configuration_from_args(int argc, char **argv, t_configuration *configuration);
+int							fill_configuration_from_args(int argc, char **argv, t_conf *configuration);
 int							error(const char *error_str);
 void						*philosopher_live(void *v_philosopher);
 void 						log_philosopher(size_t time_start, size_t philosopher_num, const char *message, int exit_flag);

@@ -1,6 +1,6 @@
 #include "philosophers.h"
 
-void	take_forks(t_philosopher *philosopher)
+static inline void	take_forks(t_philosopher *philosopher)
 {
 	pthread_mutex_lock(philosopher->first_fork);
 	log_philosopher(philosopher->configuration->start_time, philosopher->number, "has taken a fork", *philosopher->exit);
@@ -8,13 +8,13 @@ void	take_forks(t_philosopher *philosopher)
 	log_philosopher(philosopher->configuration->start_time, philosopher->number, "has taken a fork", *philosopher->exit);
 }
 
-void	put_forks(t_philosopher *philosopher)
+static inline void	put_forks(t_philosopher *philosopher)
 {
 	pthread_mutex_unlock(philosopher->second_fork);
 	pthread_mutex_unlock(philosopher->first_fork);
 }
 
-void	eat(t_philosopher *philosopher)
+static inline void	eat(t_philosopher *philosopher)
 {
 	log_philosopher(philosopher->configuration->start_time, philosopher->number, "is eating", *philosopher->exit);
 	upgraded_usleep(philosopher->configuration->time_to_eat);
