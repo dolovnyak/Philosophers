@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   string_to_int.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 05:30:04 by sbecker           #+#    #+#             */
+/*   Updated: 2021/02/09 05:30:15 by sbecker          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 int	string_to_int(const char *str)
 {
 	int			sign;
 	long long	num;
 	long long	check;
-	
+
 	num = 0;
 	check = 0;
 	sign = 1;
@@ -23,4 +35,3 @@ int	string_to_int(const char *str)
 	}
 	return ((int)num * sign);
 }
-

@@ -19,6 +19,7 @@ add_executable(Philosophers
         philo_one/srcs/utilities/size_t_to_string.c
         philo_one/srcs/utilities/ft_strcpy.c
         philo_one/srcs/utilities/numlen.c
+        philo_one/srcs/philosopher_die.c
         )
 
 #set_target_properties(${PROJECT_NAME}

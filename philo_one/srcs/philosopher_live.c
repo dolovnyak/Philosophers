@@ -1,11 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosopher_live.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 04:59:21 by sbecker           #+#    #+#             */
+/*   Updated: 2021/02/09 05:27:31 by sbecker          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 static inline void	take_forks(t_philosopher *philosopher)
 {
 	pthread_mutex_lock(philosopher->first_fork);
-	log_philosopher(philosopher->configuration->start_time, philosopher->number, "has taken a fork", *philosopher->exit);
+	log_philosopher(philosopher->conf->start_time, philosopher->number,
+					"has taken a fork", *philosopher->exit);
 	pthread_mutex_lock(philosopher->second_fork);
-	log_philosopher(philosopher->configuration->start_time, philosopher->number, "has taken a fork", *philosopher->exit);
+	log_philosopher(philosopher->conf->start_time, philosopher->number,
+					"has taken a fork", *philosopher->exit);
 }
 
 static inline void	put_forks(t_philosopher *philosopher)
@@ -14,63 +28,61 @@ static inline void	put_forks(t_philosopher *philosopher)
 	pthread_mutex_unlock(philosopher->first_fork);
 }
 
-static inline void	eat(t_philosopher *philosopher)
+static inline void	philosopher_sleep(t_philosopher *philosopher)
 {
-	log_philosopher(philosopher->configuration->start_time, philosopher->number, "is eating", *philosopher->exit);
-	upgraded_usleep(philosopher->configuration->time_to_eat);
+	log_philosopher(philosopher->conf->start_time, philosopher->number,
+					"is sleeping", *philosopher->exit);
+	upgraded_usleep_in_ms(philosopher->conf->time_to_sleep);
 }
 
-void	philosopher_die(t_philosopher *philosopher)
+static inline int	eat(t_philosopher *philosopher,
+		size_t *last_time_eating, size_t *eating_num)
 {
-	if (*philosopher->exit == TRUE)
-		return;
-	*philosopher->exit = TRUE;
-	upgraded_usleep(1);
-	log_philosopher_die(philosopher->configuration->start_time, philosopher->number);
+	take_forks(philosopher);
+	if (get_current_time() - *last_time_eating > philosopher->conf->time_to_die)
+	{
+		philosopher_die(philosopher);
+		put_forks(philosopher);
+		return (FALSE);
+	}
+	++(*eating_num);
+	*last_time_eating = get_current_time();
+	log_philosopher(philosopher->conf->start_time, philosopher->number,
+					"is eating", *philosopher->exit);
+	upgraded_usleep_in_ms(philosopher->conf->time_to_eat);
+	put_forks(philosopher);
+	if (*eating_num == philosopher->conf->number_each_philosopher_must_eat)
+	{
+		pthread_mutex_lock(philosopher->increase_mutex);
+		++(*philosopher->philosophers_who_eat_n_times);
+		pthread_mutex_unlock(philosopher->increase_mutex);
+	}
+	return (TRUE);
 }
 
-void	philosopher_sleep(t_philosopher *philosopher)
-{
-	log_philosopher(philosopher->configuration->start_time, philosopher->number, "is sleeping", *philosopher->exit);
-	upgraded_usleep(philosopher->configuration->time_to_sleep);
-}
-
-void	*philosopher_live(void *v_philosopher)
+void				*philosopher_live(void *v_philosopher)
 {
 	t_philosopher	*philosopher;
 	size_t			last_time_eating;
+	size_t			eating_num;
 	int				*exit;
-	int				eating_num;
-	int				must_eat_num;
-	
+
 	philosopher = (t_philosopher *)v_philosopher;
 	eating_num = 0;
-	must_eat_num = philosopher->configuration->number_of_times_each_philosopher_must_eat;
 	exit = philosopher->exit;
 	last_time_eating = get_current_time();
 	while (*exit == FALSE)
 	{
-		if (get_current_time() - last_time_eating > philosopher->configuration->time_to_die)
+		if (get_current_time() - last_time_eating >
+				philosopher->conf->time_to_die)
 		{
 			philosopher_die(philosopher);
 			return (NULL);
 		}
-		
-		take_forks(philosopher);
-		
-		if (get_current_time() - last_time_eating > philosopher->configuration->time_to_die)
-		{
-			philosopher_die(philosopher);
-			put_forks(philosopher);
+		log_philosopher(philosopher->conf->start_time, philosopher->number,
+				"is thinking", *philosopher->exit);
+		if (eat(philosopher, &last_time_eating, &eating_num) == FALSE)
 			return (NULL);
-		}
-		eating_num++;
-		last_time_eating = get_current_time();
-		eat(philosopher);
-		put_forks(philosopher);
-		if (eating_num == must_eat_num)
-			++(*philosopher->philosophers_who_eat_n_times);
-		
 		philosopher_sleep(philosopher);
 	}
 	return (NULL);

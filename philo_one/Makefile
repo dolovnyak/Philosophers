@@ -9,6 +9,7 @@ OBJ_DIR = build
 C_COMPILER = gcc
 C_STANDART = -std=c99
 C_CFLAGS =  $(CFLAGS) $(CPPFLAGS) -Wall -Werror -Wextra
+C_LFLAGS =  $(CFLAGS) $(CPPFLAGS) -Wall -Werror -Wextra
 
 # **************************************************************************** #
 # PHILO_ONE TARGET DESCRIPTION
@@ -16,7 +17,7 @@ C_CFLAGS =  $(CFLAGS) $(CPPFLAGS) -Wall -Werror -Wextra
 PHILO_ONE_NAME = philo_one
 PHILO_ONE_PATH = srcs
 PHILO_ONE_FILE = ./philo_one
-PHILO_ONE_SRCS = fill_configuration_from_args.c logging.c main.c philosopher_live.c
+PHILO_ONE_SRCS = fill_configuration_from_args.c logging.c main.c philosopher_live.c philosopher_die.c
 PHILO_ONE_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(PHILO_ONE_SRCS))
 PHILO_ONE_DEPS = $(patsubst %, $(OBJ_DIR)/%.d, $(PHILO_ONE_SRCS))
 PHILO_ONE_LIBS = -l philo_sub -L .
