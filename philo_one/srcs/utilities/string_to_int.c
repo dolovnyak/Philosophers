@@ -1,4 +1,4 @@
-int		string_to_int(const char *str)
+int	string_to_int(const char *str)
 {
 	int			sign;
 	long long	num;

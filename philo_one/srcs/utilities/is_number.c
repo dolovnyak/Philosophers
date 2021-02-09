@@ -1,6 +1,6 @@
 #include "philosophers.h"
 
-int		is_number(char *str)
+inline int	is_number(char *str)
 {
 	if (!str || !*str)
 		return (FALSE);

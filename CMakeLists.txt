@@ -15,6 +15,10 @@ add_executable(Philosophers
         philo_one/srcs/utilities/timeval_into_size_t.c
         philo_one/srcs/utilities/get_current_time.c
         philo_one/srcs/utilities/upgraded_usleep.c
+        philo_one/srcs/utilities/mem_help.c
+        philo_one/srcs/utilities/size_t_to_string.c
+        philo_one/srcs/utilities/ft_strcpy.c
+        philo_one/srcs/utilities/numlen.c
         )
 
 #set_target_properties(${PROJECT_NAME}
