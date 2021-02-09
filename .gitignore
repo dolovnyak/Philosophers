@@ -3,3 +3,7 @@
 Philosophers
 *a.out
 *.dSYM
+*.swp
+philo_one/philo_one
+*build
+*.a
