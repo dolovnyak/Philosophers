@@ -3,26 +3,5 @@ project(Philosophers C)
 
 set(CMAKE_C_STANDARD 99)
 
-include_directories(philo_one/includes)
-add_executable(Philosophers
-        philo_one/srcs/main.c
-        philo_one/srcs/logging.c
-        philo_one/srcs/fill_configuration_from_args.c
-        philo_one/srcs/philosopher_live.c
-        philo_one/srcs/utilities/string_len.c
-        philo_one/srcs/utilities/is_number.c
-        philo_one/srcs/utilities/string_to_int.c
-        philo_one/srcs/utilities/timeval_into_size_t.c
-        philo_one/srcs/utilities/get_current_time.c
-        philo_one/srcs/utilities/upgraded_usleep.c
-        philo_one/srcs/utilities/mem_help.c
-        philo_one/srcs/utilities/size_t_to_string.c
-        philo_one/srcs/utilities/ft_strcpy.c
-        philo_one/srcs/utilities/numlen.c
-        philo_one/srcs/philosopher_die.c
-        )
-
-#set_target_properties(${PROJECT_NAME}
-#        PROPERTIES
-#        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}"
-#        )
+add_subdirectory(philo_one)
+add_subdirectory(philo_two)

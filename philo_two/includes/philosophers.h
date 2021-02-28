@@ -6,7 +6,7 @@
 /*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 05:49:00 by sbecker           #+#    #+#             */
-/*   Updated: 2021/02/28 05:29:03 by sbecker          ###   ########.fr       */
+/*   Updated: 2021/02/09 05:50:17 by sbecker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,12 @@
 
 typedef struct				s_configuration
 {
-	size_t					philosophers_num;
+	size_t					number_of_philosophers;
 	size_t					time_to_die;
 	size_t					time_to_eat;
 	size_t					time_to_sleep;
 	size_t					number_each_philosopher_must_eat;
 	size_t					start_time;
-	pthread_mutex_t			*forks;
 }							t_conf;
 
 typedef struct				s_philosopher
@@ -50,7 +49,7 @@ size_t						string_len(const char *s);
 int							is_number(char *str);
 int							string_to_int(const char *str);
 int							fill_configuration_from_args(int argc, char **argv,
-		t_conf *conf);
+		t_conf *configuration);
 int							error(const char *error_str);
 void						*philosopher_live(void *v_philosopher);
 void						log_philosopher(size_t time_start,
@@ -66,7 +65,5 @@ char						*ft_strcpy(char *dst, const char *src);
 void						copy_size_t_to_string(char *string, size_t num);
 size_t						numlen(int num);
 void						philosopher_die(t_philosopher *philosopher);
-void						clean_all(t_conf *conf,
-		t_philosopher *philosophers);
 
 #endif
