@@ -5,6 +5,7 @@ Philosophers
 *.dSYM
 *.swp
 philo_one/philo_one
+philo_one/philo_two
 *build
 *.a
 Philosphers-42Project-Tester/log_philo_one
