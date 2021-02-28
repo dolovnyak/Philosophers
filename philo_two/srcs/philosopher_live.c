@@ -14,18 +14,18 @@
 
 static inline void	take_forks(t_philosopher *philosopher)
 {
-	pthread_mutex_lock(philosopher->first_fork);
-	log_philosopher(philosopher->conf->start_time, philosopher->number,
-					"has taken a fork", *philosopher->exit);
-	pthread_mutex_lock(philosopher->second_fork);
+    sem_wait(philosopher->forks_semaphore);
+    log_philosopher(philosopher->conf->start_time, philosopher->number,
+                    "has taken a fork", *philosopher->exit);
+    sem_wait(philosopher->forks_semaphore);
 	log_philosopher(philosopher->conf->start_time, philosopher->number,
 					"has taken a fork", *philosopher->exit);
 }
 
 static inline void	put_forks(t_philosopher *philosopher)
 {
-	pthread_mutex_unlock(philosopher->second_fork);
-	pthread_mutex_unlock(philosopher->first_fork);
+    sem_post(philosopher->forks_semaphore);
+    sem_post(philosopher->forks_semaphore);
 }
 
 static inline void	philosopher_sleep(t_philosopher *philosopher)

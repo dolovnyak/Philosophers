@@ -6,7 +6,7 @@
 /*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 05:49:00 by sbecker           #+#    #+#             */
-/*   Updated: 2021/02/09 05:50:17 by sbecker          ###   ########.fr       */
+/*   Updated: 2021/02/28 05:29:03 by sbecker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <pthread.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <semaphore.h>
 
 # define SUCCESS 1
 # define ERROR 0
@@ -26,7 +27,7 @@
 
 typedef struct				s_configuration
 {
-	size_t					number_of_philosophers;
+	size_t					philosophers_num;
 	size_t					time_to_die;
 	size_t					time_to_eat;
 	size_t					time_to_sleep;
@@ -36,8 +37,7 @@ typedef struct				s_configuration
 
 typedef struct				s_philosopher
 {
-	pthread_mutex_t			*first_fork;
-	pthread_mutex_t			*second_fork;
+    sem_t                   *forks_semaphore;
 	size_t					number;
 	t_conf					*conf;
 	size_t					*philosophers_who_eat_n_times;
@@ -49,7 +49,7 @@ size_t						string_len(const char *s);
 int							is_number(char *str);
 int							string_to_int(const char *str);
 int							fill_configuration_from_args(int argc, char **argv,
-		t_conf *configuration);
+		t_conf *conf);
 int							error(const char *error_str);
 void						*philosopher_live(void *v_philosopher);
 void						log_philosopher(size_t time_start,
@@ -65,5 +65,6 @@ char						*ft_strcpy(char *dst, const char *src);
 void						copy_size_t_to_string(char *string, size_t num);
 size_t						numlen(int num);
 void						philosopher_die(t_philosopher *philosopher);
+void						clean_all(t_philosopher *philosophers);
 
 #endif

@@ -1,12 +1,18 @@
+cmake_minimum_required(VERSION 3.17)
+project(Philosophers C)
+
+set(CMAKE_C_STANDARD 99)
+
 include_directories(includes)
 
-SET(TARGET_NAME philo_one)
+SET(TARGET_NAME philo_two)
 
 add_executable(${TARGET_NAME}
         srcs/main.c
         srcs/logging.c
         srcs/fill_configuration_from_args.c
         srcs/philosopher_live.c
+        srcs/clean_all.c
         srcs/utilities/string_len.c
         srcs/utilities/is_number.c
         srcs/utilities/string_to_int.c

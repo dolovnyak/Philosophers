@@ -9,19 +9,19 @@ OBJ_DIR = build
 C_COMPILER = gcc
 C_STANDART = -std=c99
 C_CFLAGS =  $(CFLAGS) $(CPPFLAGS) -Wall -Werror -Wextra
-C_LFLAGS =  $(CFLAGS) $(CPPFLAGS) -Wall -Werror -Wextra
+C_LFLAGS =  $(CFLAGS) $(CPPFLAGS) -Wall -Werror -Wextra -fsanitize=address
 
 # **************************************************************************** #
-# PHILO_ONE TARGET DESCRIPTION
+# PHILO_TWO TARGET DESCRIPTION
 
-PHILO_ONE_NAME = philo_one
-PHILO_ONE_PATH = srcs
-PHILO_ONE_FILE = ./philo_one
-PHILO_ONE_SRCS = fill_configuration_from_args.c logging.c main.c philosopher_live.c philosopher_die.c
-PHILO_ONE_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(PHILO_ONE_SRCS))
-PHILO_ONE_DEPS = $(patsubst %, $(OBJ_DIR)/%.d, $(PHILO_ONE_SRCS))
-PHILO_ONE_LIBS = -l philo_sub -L .
-PHILO_ONE_INCS = -I includes
+PHILO_TWO_NAME = philo_two
+PHILO_TWO_PATH = srcs
+PHILO_TWO_FILE = ./philo_two
+PHILO_TWO_SRCS = fill_configuration_from_args.c logging.c main.c philosopher_live.c philosopher_die.c clean_all.c
+PHILO_TWO_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(PHILO_TWO_SRCS))
+PHILO_TWO_DEPS = $(patsubst %, $(OBJ_DIR)/%.d, $(PHILO_TWO_SRCS))
+PHILO_TWO_LIBS = -l philo_sub -L .
+PHILO_TWO_INCS = -I includes
 
 # **************************************************************************** #
 # PHILO_SUB TARGET DESCRIPTION
@@ -41,24 +41,24 @@ PHILO_SUB_INCS = -I includes
 .PHONY: all re clean fclean
 .DEFAULT_GOAL = all
 
-all: $(PHILO_SUB_FILE) $(PHILO_ONE_FILE)
+all: $(PHILO_SUB_FILE) $(PHILO_TWO_FILE)
 
 clean:
 	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@rm -rf $(PHILO_SUB_FILE) $(PHILO_ONE_FILE)
+	@rm -rf $(PHILO_SUB_FILE) $(PHILO_TWO_FILE)
 
 re: fclean all
 
-$(PHILO_ONE_FILE): $(PHILO_SUB_FILE) $(PHILO_ONE_OBJS)
-	@$(C_COMPILER) $(C_LFLAGS) $(C_STANDART) -o $(PHILO_ONE_FILE) $(PHILO_ONE_OBJS)  $(PHILO_ONE_LIBS)
+$(PHILO_TWO_FILE): $(PHILO_SUB_FILE) $(PHILO_TWO_OBJS)
+	@$(C_COMPILER) $(C_LFLAGS) $(C_STANDART) -o $(PHILO_TWO_FILE) $(PHILO_TWO_OBJS)  $(PHILO_TWO_LIBS)
 	@printf 'Finished	\033[1;32m\033[7m$@ \033[0m\n\n'
 
-$(OBJ_DIR)/%.c.o: $(PHILO_ONE_PATH)/%.c
+$(OBJ_DIR)/%.c.o: $(PHILO_TWO_PATH)/%.c
 	@mkdir -p $(OBJ_DIR)
 	@printf 'Compiling	\033[1;33m$<\033[0m ...\n'
-	@$(C_COMPILER) $(C_CFLAGS) $(C_STANDART) $(PHILO_ONE_INCS) -o $@ -c $< -MMD
+	@$(C_COMPILER) $(C_CFLAGS) $(C_STANDART) $(PHILO_TWO_INCS) -o $@ -c $< -MMD
 
 $(PHILO_SUB_FILE): $(PHILO_SUB_OBJS)
 	@ar rc $(PHILO_SUB_FILE) $(PHILO_SUB_OBJS)
@@ -70,4 +70,4 @@ $(OBJ_DIR)/%.c.o: $(PHILO_SUB_PATH)/%.c
 	@printf 'Compiling	\033[1;33m$<\033[0m ...\n'
 	@$(C_COMPILER) $(C_CFLAGS) $(C_STANDART) $(PHILO_SUB_INCS) -o $@ -c $< -MMD
 
--include $(PHILO_ONE_DEPS) $(PHILO_SUB_DEPS)
+-include $(PHILO_TWO_DEPS) $(PHILO_SUB_DEPS)

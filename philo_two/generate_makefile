@@ -21,7 +21,7 @@ PHILO_SUB = {
 }
 
 PHILOSOPHERS = {
-    "name": "philo_one",
+    "name": "philo_two",
     "out": ".",
     "type": "prog",
     "path": "srcs",
@@ -30,7 +30,8 @@ PHILOSOPHERS = {
         "logging.c",
         "main.c",
         "philosopher_live.c",
-		"philosopher_die.c"
+		"philosopher_die.c",
+		"clean_all.c"
         ],
     "includes": ["includes"],
     "peerdirs": [PHILO_SUB],
