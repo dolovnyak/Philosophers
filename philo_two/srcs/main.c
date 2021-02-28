@@ -6,20 +6,21 @@
 /*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 04:04:56 by sbecker           #+#    #+#             */
-/*   Updated: 2021/02/28 05:24:47 by sbecker          ###   ########.fr       */
+/*   Updated: 2021/02/28 09:06:18 by sbecker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
 static int	setup_sem_mutex(sem_t **forks_semaphore, t_conf *conf,
-                              pthread_mutex_t **increase_mutex)
+		pthread_mutex_t **increase_mutex)
 {
 	pthread_mutex_t	*tmp_increase_mutex;
 
-    sem_unlink("forks_semaphore");
-    if ((*forks_semaphore = sem_open("forks_semaphore", O_CREAT | O_EXCL, S_IRWXU, conf->philosophers_num)) == SEM_FAILED)
-        return (error("sem open"));
+	sem_unlink("forks_semaphore");
+	if ((*forks_semaphore = sem_open("forks_semaphore",
+			O_CREAT | O_EXCL, S_IRWXU, conf->philosophers_num)) == SEM_FAILED)
+		return (error("sem open"));
 	if (!(tmp_increase_mutex = (pthread_mutex_t *)malloc(
 					sizeof(pthread_mutex_t))))
 		return (error("increase mutex malloc return NULL"));
@@ -32,7 +33,7 @@ static int	setup_sem_mutex(sem_t **forks_semaphore, t_conf *conf,
 static int	setup_philosophers(t_philosopher **philosophers, t_conf *conf,
 		int *exit, size_t *philosophers_who_eat_n_times)
 {
-    sem_t           *forks_semaphore;
+	sem_t			*forks_semaphore;
 	pthread_mutex_t	*increase_mutex;
 	size_t			i;
 

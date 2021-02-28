@@ -6,7 +6,7 @@
 /*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 05:49:00 by sbecker           #+#    #+#             */
-/*   Updated: 2021/02/28 05:29:03 by sbecker          ###   ########.fr       */
+/*   Updated: 2021/02/28 09:07:04 by sbecker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct				s_configuration
 
 typedef struct				s_philosopher
 {
-    sem_t                   *forks_semaphore;
+	sem_t					*forks_semaphore;
 	size_t					number;
 	t_conf					*conf;
 	size_t					*philosophers_who_eat_n_times;

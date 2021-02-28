@@ -6,7 +6,7 @@
 /*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 04:59:21 by sbecker           #+#    #+#             */
-/*   Updated: 2021/02/09 05:27:31 by sbecker          ###   ########.fr       */
+/*   Updated: 2021/02/28 09:05:00 by sbecker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 static inline void	take_forks(t_philosopher *philosopher)
 {
-    sem_wait(philosopher->forks_semaphore);
-    log_philosopher(philosopher->conf->start_time, philosopher->number,
-                    "has taken a fork", *philosopher->exit);
-    sem_wait(philosopher->forks_semaphore);
+	sem_wait(philosopher->forks_semaphore);
 	log_philosopher(philosopher->conf->start_time, philosopher->number,
-					"has taken a fork", *philosopher->exit);
+			"has taken a fork", *philosopher->exit);
+	sem_wait(philosopher->forks_semaphore);
+	log_philosopher(philosopher->conf->start_time, philosopher->number,
+			"has taken a fork", *philosopher->exit);
 }
 
 static inline void	put_forks(t_philosopher *philosopher)
 {
-    sem_post(philosopher->forks_semaphore);
-    sem_post(philosopher->forks_semaphore);
+	sem_post(philosopher->forks_semaphore);
+	sem_post(philosopher->forks_semaphore);
 }
 
 static inline void	philosopher_sleep(t_philosopher *philosopher)
