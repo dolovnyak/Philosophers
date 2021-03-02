@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <printf.h>
 #include "philosophers.h"
 
 inline int	is_philosopher_die(t_philosopher *philosopher)
