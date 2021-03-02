@@ -31,7 +31,8 @@ PHILOSOPHERS = {
         "main.c",
         "philosopher_live.c",
 		"philosopher_die.c",
-		"clean_all.c"
+		"clean_all.c",
+		"setup_philosophers.c"
         ],
     "includes": ["includes"],
     "peerdirs": [PHILO_SUB],

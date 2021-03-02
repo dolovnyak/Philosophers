@@ -29,10 +29,11 @@ int	fill_configuration_from_args(int argc, char **argv, t_conf *conf)
 	conf->time_to_sleep = string_to_int(argv[4]);
 	if (argc == 6)
 	{
-		conf->number_each_philosopher_must_eat =
+		conf->philosopher_must_eat_times =
 			string_to_int(argv[5]);
-		if (conf->number_each_philosopher_must_eat == 0)
+		if (conf->philosopher_must_eat_times == 0)
 			return (error("for 'eating number' at least value 1 needed"));
+		conf->is_philosophers_must_eat_n_times = TRUE;
 	}
 	if (conf->philosophers_num <= 1)
 		return (error("at least two philosophers needed"));
