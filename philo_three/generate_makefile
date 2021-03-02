@@ -1,0 +1,50 @@
+from package import generate_makefile
+
+PHILO_SUB = {
+    "name": "philo_sub",
+    "out": ".",
+    "type": "lib",
+    "path": "srcs/utilities",
+    "sources": [
+        "get_current_time.c",
+        "is_number.c",
+        "string_len.c",
+        "string_to_int.c",
+        "timeval_into_size_t.c",
+        "upgraded_usleep.c",
+        "ft_strcpy.c",
+        "numlen.c",
+        "mem_help.c",
+        "size_t_to_string.c"
+        ],
+    "includes": ["includes"]
+}
+
+PHILOSOPHERS = {
+    "name": "philo_three",
+    "out": ".",
+    "type": "prog",
+    "path": "srcs",
+    "sources": [
+        "fill_configuration_from_args.c",
+        "logging.c",
+        "main.c",
+        "philosopher_live.c",
+		"philosopher_die.c",
+		"clean_all.c",
+		"setup_philosophers.c"
+        ],
+    "includes": ["includes"],
+    "peerdirs": [PHILO_SUB],
+}
+
+COMPILERS = {
+    "c": {
+        "flags": "-Wall -Werror -Wextra",
+        "file_extension": "c",
+        "std": "-std=c99",
+        "binary": "gcc",
+    }
+}
+
+generate_makefile(PHILOSOPHERS, COMPILERS)
