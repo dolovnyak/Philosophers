@@ -48,8 +48,9 @@ static void	monitor_philosophers(t_philosopher *philosophers, t_conf *conf)
 
 	philosophers_who_eat_n_times = 0;
 	i = -1;
-	while (++i < conf->philosophers_num)
+	while (++i <= conf->philosophers_num)
 	{
+        i = (i == conf->philosophers_num) ? (-1) : (i);
 		waitpid(philosophers[i].pid, &status, 0);
 		if (WEXITSTATUS(status) == 3)
 		{
@@ -62,7 +63,6 @@ static void	monitor_philosophers(t_philosopher *philosophers, t_conf *conf)
 			if (philosophers_who_eat_n_times == conf->philosophers_num)
 				break ;
 		}
-		i = i == conf->philosophers_num ? -1 : i;
 	}
 	i = -1;
 	while (++i < conf->philosophers_num)

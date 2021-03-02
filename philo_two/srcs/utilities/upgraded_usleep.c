@@ -12,7 +12,7 @@
 
 #include "philosophers.h"
 
-inline void	upgraded_usleep_in_ms(size_t sleep_time_in_ms)
+inline void	ms_usleep(size_t sleep_time_in_ms)
 {
 	struct timeval	start_time;
 

@@ -24,7 +24,7 @@ add_executable(${TARGET_NAME}
         srcs/utilities/ft_strcpy.c
         srcs/utilities/numlen.c
         srcs/philosopher_die.c
-        )
+        srcs/setup_philosophers.c)
 
 
 set_target_properties(${TARGET_NAME}

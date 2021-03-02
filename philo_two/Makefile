@@ -9,7 +9,7 @@ OBJ_DIR = build
 C_COMPILER = gcc
 C_STANDART = -std=c99
 C_CFLAGS =  $(CFLAGS) $(CPPFLAGS) -Wall -Werror -Wextra
-C_LFLAGS =  $(CFLAGS) $(CPPFLAGS) -Wall -Werror -Wextra -fsanitize=address
+C_LFLAGS =  $(CFLAGS) $(CPPFLAGS) -Wall -Werror -Wextra
 
 # **************************************************************************** #
 # PHILO_TWO TARGET DESCRIPTION
@@ -17,7 +17,7 @@ C_LFLAGS =  $(CFLAGS) $(CPPFLAGS) -Wall -Werror -Wextra -fsanitize=address
 PHILO_TWO_NAME = philo_two
 PHILO_TWO_PATH = srcs
 PHILO_TWO_FILE = ./philo_two
-PHILO_TWO_SRCS = fill_configuration_from_args.c logging.c main.c philosopher_live.c philosopher_die.c clean_all.c
+PHILO_TWO_SRCS = fill_configuration_from_args.c logging.c main.c philosopher_live.c philosopher_die.c clean_all.c setup_philosophers.c
 PHILO_TWO_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(PHILO_TWO_SRCS))
 PHILO_TWO_DEPS = $(patsubst %, $(OBJ_DIR)/%.d, $(PHILO_TWO_SRCS))
 PHILO_TWO_LIBS = -l philo_sub -L .

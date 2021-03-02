@@ -14,9 +14,8 @@
 
 void	clean_all(t_philosopher *philosophers)
 {
-	pthread_mutex_destroy(philosophers[0].increase_mutex);
-	free(philosophers[0].increase_mutex);
 	sem_unlink("forks_semaphore");
 	sem_close(philosophers[0].forks_semaphore);
+	sem_unlink("death_semaphore");
 	free(philosophers);
 }
