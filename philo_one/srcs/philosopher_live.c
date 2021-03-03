@@ -26,7 +26,7 @@ static inline void	put_forks(t_philosopher *philosopher)
 	pthread_mutex_unlock(philosopher->first_fork);
 }
 
-static inline int	philosopher_eat(t_philosopher *philosopher,
+static inline void	philosopher_eat(t_philosopher *philosopher,
 		size_t *eat_times)
 {
 	take_forks(philosopher);
@@ -37,7 +37,6 @@ static inline int	philosopher_eat(t_philosopher *philosopher,
 	philosopher_log(philosopher, "is eating");
 	ms_usleep(philosopher->conf->time_to_eat);
 	put_forks(philosopher);
-	return (TRUE);
 }
 
 static inline int	is_eat_required_times(t_philosopher *philosopher,
