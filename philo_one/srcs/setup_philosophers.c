@@ -34,7 +34,7 @@ static int	setup_mutexes(pthread_mutex_t **forks, t_conf *conf,
 	return (SUCCESS);
 }
 
-int			setup_philosophers_own_mutexes(t_philosopher *philosophers,
+static int	setup_philosophers_own_mutexes(t_philosopher *philosophers,
 		size_t philosophers_num)
 {
 	size_t			i;
