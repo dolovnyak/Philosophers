@@ -72,11 +72,11 @@ int			setup_philosophers(t_philosopher **philosophers,
 	while (++i < conf->philosophers_num - 1)
 		(*philosophers)[i] = (t_philosopher){conf, exit, i + 1,
 			&(conf->forks[i]), &(conf->forks[i + 1]),
-			exit_mutex, NULL, NULL, 0, 0};
+			exit_mutex, NULL, NULL, get_current_time(), 0};
 	(*philosophers)[conf->philosophers_num - 1] =
 		(t_philosopher){conf, exit, conf->philosophers_num,
 			&(conf->forks[0]), &(conf->forks[conf->philosophers_num - 1]),
-			exit_mutex, NULL, NULL, 0, 0};
+			exit_mutex, NULL, NULL, get_current_time(), 0};
 	setup_philosophers_own_mutexes(*philosophers, conf->philosophers_num);
 	return (SUCCESS);
 }

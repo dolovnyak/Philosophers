@@ -6,7 +6,7 @@
 /*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 04:04:56 by sbecker           #+#    #+#             */
-/*   Updated: 2021/03/03 13:35:23 by sbecker          ###   ########.fr       */
+/*   Updated: 2021/03/03 16:37:19 by sbecker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static int	launch_threads(t_philosopher *philosophers,
 			return (error("pthread create"));
 		i += 2;
 	}
-	ms_usleep(conf->time_to_eat);
+	conf->time_to_eat < conf->time_to_die ?
+		ms_usleep(conf->time_to_eat) : ms_usleep(conf->time_to_die);
 	i = 1;
 	while (i < conf->philosophers_num)
 	{
@@ -43,13 +44,14 @@ static void	monitor_philosophers(t_philosopher *philosophers, t_conf *conf)
 	size_t	i;
 
 	i = -1;
+	ms_usleep(2);
 	while (TRUE)
 	{
 		++i;
 		if (i == conf->philosophers_num)
 		{
 			i = 0;
-			ms_usleep(5);
+			ms_usleep(2);
 		}
 		if (is_all_philosophers_eaten_required_times(philosophers,
 					conf->philosophers_num))
@@ -72,7 +74,6 @@ static int	launch_philosophers_threads(t_philosopher *philosophers,
 		return (error("malloc threads"));
 	if (!(launch_threads(philosophers, conf, threads)))
 		return (error("launch threads"));
-	ms_usleep(conf->time_to_eat);
 	monitor_philosophers(philosophers, conf);
 	i = -1;
 	while (++i < conf->philosophers_num)
