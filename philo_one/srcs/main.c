@@ -6,12 +6,11 @@
 /*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 04:04:56 by sbecker           #+#    #+#             */
-/*   Updated: 2021/02/28 05:24:47 by sbecker          ###   ########.fr       */
+/*   Updated: 2021/03/03 13:35:23 by sbecker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
 
 static int	launch_threads(t_philosopher *philosophers,
 		t_conf *conf, pthread_t *threads)
@@ -27,7 +26,7 @@ static int	launch_threads(t_philosopher *philosophers,
 			return (error("pthread create"));
 		i += 2;
 	}
-    ms_usleep(conf->time_to_eat);
+	ms_usleep(conf->time_to_eat);
 	i = 1;
 	while (i < conf->philosophers_num)
 	{
@@ -39,31 +38,27 @@ static int	launch_threads(t_philosopher *philosophers,
 	return (SUCCESS);
 }
 
-#include <stdio.h>
 static void	monitor_philosophers(t_philosopher *philosophers, t_conf *conf)
 {
-    size_t	i;
-    size_t	philosophers_who_eat_n_times;
+	size_t	i;
 
-    i = -1;
-    philosophers_who_eat_n_times = 0;
-    while (++i <= conf->philosophers_num)
-    {
-        if (i >= conf->philosophers_num)
-        {
-            i = 0;
-            ms_usleep(5);
-        }
-        if (is_philosopher_die(&(philosophers[i])))
-            return (philosopher_die(&(philosophers[i])));
-        if (conf->is_philosophers_must_eat_n_times == TRUE)
-            if (philosophers[i].is_eat_n_times == TRUE)
-            {
-                ++philosophers_who_eat_n_times;
-                if (philosophers_who_eat_n_times >= conf->philosophers_num)
-                    return ;
-            }
-    }
+	i = -1;
+	while (TRUE)
+	{
+		++i;
+		if (i == conf->philosophers_num)
+		{
+			i = 0;
+			ms_usleep(5);
+		}
+		if (is_all_philosophers_eaten_required_times(philosophers,
+					conf->philosophers_num))
+			return ;
+		if (philosophers[i].is_eaten_required_times == TRUE)
+			continue;
+		if (is_philosopher_die(&(philosophers[i])))
+			return (philosopher_die(&(philosophers[i])));
+	}
 }
 
 static int	launch_philosophers_threads(t_philosopher *philosophers,
@@ -80,8 +75,8 @@ static int	launch_philosophers_threads(t_philosopher *philosophers,
 	ms_usleep(conf->time_to_eat);
 	monitor_philosophers(philosophers, conf);
 	i = -1;
-    while (++i < conf->philosophers_num)
-        pthread_detach(threads[i]);
+	while (++i < conf->philosophers_num)
+		pthread_join(threads[i], NULL);
 	free(threads);
 	return (SUCCESS);
 }

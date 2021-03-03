@@ -18,12 +18,12 @@ add_executable(${TARGET_NAME}
         srcs/utilities/string_to_int.c
         srcs/utilities/timeval_into_size_t.c
         srcs/utilities/get_current_time.c
-        srcs/utilities/upgraded_usleep.c
+        srcs/utilities/ms_usleep.c
         srcs/utilities/mem_help.c
         srcs/utilities/size_t_to_string.c
         srcs/utilities/ft_strcpy.c
         srcs/utilities/numlen.c
-        srcs/philosopher_die.c
+        srcs/philosopher_utilities.c
         srcs/setup_philosophers.c)
 
 

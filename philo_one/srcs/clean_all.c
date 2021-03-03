@@ -18,9 +18,13 @@ void	clean_all(t_conf *conf, t_philosopher *philosophers)
 
 	i = -1;
 	while (++i < conf->philosophers_num)
+	{
 		pthread_mutex_destroy(&(conf->forks[i]));
+		pthread_mutex_destroy(philosophers[i].eat_given_times_mutex);
+		free(philosophers[i].eat_given_times_mutex);
+	}
 	free(conf->forks);
-	pthread_mutex_destroy(philosophers[0].death_mutex);
-	free(philosophers[0].death_mutex);
+	pthread_mutex_destroy(philosophers[0].exit_mutex);
+	free(philosophers[0].exit_mutex);
 	free(philosophers);
 }
