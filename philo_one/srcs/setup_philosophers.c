@@ -34,6 +34,26 @@ static int	setup_mutexes(pthread_mutex_t **forks, t_conf *conf,
 	return (SUCCESS);
 }
 
+int			setup_philosophers_own_mutexes(t_philosopher *philosophers, size_t philosophers_num)
+{
+	size_t			i;
+
+	i = -1;
+	while (++i < philosophers_num)
+	{
+		if (!(philosophers[i].is_eaten_given_times_mutex =
+					  (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t))))
+			return (error("eat malloc return NULL"));
+		if (pthread_mutex_init(philosophers[i].is_eaten_given_times_mutex, NULL))
+			return (error("eat mutex init"));
+		if (!(philosophers[i].last_time_eating_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t))))
+			return (error("eat malloc return NULL"));
+		if (pthread_mutex_init(philosophers[i].last_time_eating_mutex, NULL))
+			return (error("eat mutex init"));
+	}
+	return (SUCCESS);
+}
+
 int			setup_philosophers(t_philosopher **philosophers,
 		t_conf *conf, int *exit)
 {
@@ -48,18 +68,10 @@ int			setup_philosophers(t_philosopher **philosophers,
 	i = -1;
 	while (++i < conf->philosophers_num - 1)
 		(*philosophers)[i] = (t_philosopher){conf, exit, i + 1,
-			&(conf->forks[i]), &(conf->forks[i + 1]), exit_mutex, NULL, 0, 0};
+			&(conf->forks[i]), &(conf->forks[i + 1]), exit_mutex, NULL, NULL, 0, 0};
 	(*philosophers)[conf->philosophers_num - 1] =
 		(t_philosopher){conf, exit, conf->philosophers_num, &(conf->forks[0]),
-			&(conf->forks[conf->philosophers_num - 1]), exit_mutex, NULL, 0, 0};
-	i = -1;
-	while (++i < conf->philosophers_num)
-	{
-		if (!((*philosophers)[i].eat_given_times_mutex =
-					(pthread_mutex_t *)malloc(sizeof(pthread_mutex_t))))
-			return (error("eat malloc return NULL"));
-		if (pthread_mutex_init((*philosophers)[i].eat_given_times_mutex, NULL))
-			return (error("eat mutex init"));
-	}
+			&(conf->forks[conf->philosophers_num - 1]), exit_mutex, NULL, NULL, 0, 0};
+	setup_philosophers_own_mutexes(*philosophers, conf->philosophers_num);
 	return (SUCCESS);
 }

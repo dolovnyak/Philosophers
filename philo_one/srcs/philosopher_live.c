@@ -31,7 +31,9 @@ static inline int	philosopher_eat(t_philosopher *philosopher,
 {
 	take_forks(philosopher);
 	++(*eat_times);
+	pthread_mutex_lock(philosopher->last_time_eating_mutex);
 	philosopher->last_time_eating = get_current_time();
+	pthread_mutex_unlock(philosopher->last_time_eating_mutex);
 	philosopher_log(philosopher, "is eating");
 	ms_usleep(philosopher->conf->time_to_eat);
 	put_forks(philosopher);
@@ -55,7 +57,9 @@ void				*philosopher_live(void *v_philosopher)
 
 	eat_times = 0;
 	philosopher = (t_philosopher *)v_philosopher;
+	pthread_mutex_lock(philosopher->last_time_eating_mutex);
 	philosopher->last_time_eating = get_current_time();
+	pthread_mutex_unlock(philosopher->last_time_eating_mutex);
 	while (TRUE)
 	{
 		if (is_should_exit(philosopher))
@@ -64,7 +68,9 @@ void				*philosopher_live(void *v_philosopher)
 		philosopher_eat(philosopher, &eat_times);
 		if (is_eat_required_times(philosopher, eat_times))
 		{
-			philosopher->is_eaten_required_times = TRUE;
+			pthread_mutex_lock(philosopher->is_eaten_given_times_mutex);
+			philosopher->is_eaten_given_times = TRUE;
+			pthread_mutex_unlock(philosopher->is_eaten_given_times_mutex);
 			return (NULL);
 		}
 		philosopher_log(philosopher, "is sleeping");

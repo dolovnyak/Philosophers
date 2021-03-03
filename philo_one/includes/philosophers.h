@@ -44,9 +44,10 @@ typedef struct				s_philosopher
 	pthread_mutex_t			*first_fork;
 	pthread_mutex_t			*second_fork;
 	pthread_mutex_t			*exit_mutex;
-	pthread_mutex_t			*eat_given_times_mutex;
+	pthread_mutex_t			*is_eaten_given_times_mutex;
+	pthread_mutex_t			*last_time_eating_mutex;
 	size_t					last_time_eating;
-	int						is_eaten_required_times;
+	int						is_eaten_given_times;
 }							t_philosopher;
 
 size_t						string_len(const char *s);

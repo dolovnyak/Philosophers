@@ -23,21 +23,26 @@ void		philosopher_die(t_philosopher *philosopher)
 
 inline int	is_philosopher_die(t_philosopher *philosopher)
 {
+	pthread_mutex_lock(philosopher->last_time_eating_mutex);
 	if (get_current_time() - philosopher->last_time_eating >
 			philosopher->conf->time_to_die)
+	{
+		pthread_mutex_unlock(philosopher->last_time_eating_mutex);
 		return (TRUE);
+	}
+	pthread_mutex_unlock(philosopher->last_time_eating_mutex);
 	return (FALSE);
 }
 
 inline int	is_philosopher_eaten_required_times(t_philosopher *philosopher)
 {
-	pthread_mutex_lock(philosopher->eat_given_times_mutex);
-	if (philosopher->is_eaten_required_times == TRUE)
+	pthread_mutex_lock(philosopher->is_eaten_given_times_mutex);
+	if (philosopher->is_eaten_given_times == TRUE)
 	{
-		pthread_mutex_unlock(philosopher->eat_given_times_mutex);
+		pthread_mutex_unlock(philosopher->is_eaten_given_times_mutex);
 		return (TRUE);
 	}
-	pthread_mutex_unlock(philosopher->eat_given_times_mutex);
+	pthread_mutex_unlock(philosopher->is_eaten_given_times_mutex);
 	return (FALSE);
 }
 

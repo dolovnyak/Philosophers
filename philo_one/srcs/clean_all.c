@@ -20,8 +20,10 @@ void	clean_all(t_conf *conf, t_philosopher *philosophers)
 	while (++i < conf->philosophers_num)
 	{
 		pthread_mutex_destroy(&(conf->forks[i]));
-		pthread_mutex_destroy(philosophers[i].eat_given_times_mutex);
-		free(philosophers[i].eat_given_times_mutex);
+		pthread_mutex_destroy(philosophers[i].is_eaten_given_times_mutex);
+		free(philosophers[i].is_eaten_given_times_mutex);
+		pthread_mutex_destroy(philosophers[i].last_time_eating_mutex);
+		free(philosophers[i].last_time_eating_mutex);
 	}
 	free(conf->forks);
 	pthread_mutex_destroy(philosophers[0].exit_mutex);

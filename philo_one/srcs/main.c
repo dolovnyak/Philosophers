@@ -54,7 +54,7 @@ static void	monitor_philosophers(t_philosopher *philosophers, t_conf *conf)
 		if (is_all_philosophers_eaten_required_times(philosophers,
 					conf->philosophers_num))
 			return ;
-		if (philosophers[i].is_eaten_required_times == TRUE)
+		if (is_philosopher_eaten_required_times(&(philosophers[i])))
 			continue;
 		if (is_philosopher_die(&(philosophers[i])))
 			return (philosopher_die(&(philosophers[i])));
