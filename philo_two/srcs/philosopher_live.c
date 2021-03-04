@@ -6,7 +6,7 @@
 /*   By: sbecker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 04:59:21 by sbecker           #+#    #+#             */
-/*   Updated: 2021/03/02 15:53:03 by sbecker          ###   ########.fr       */
+/*   Updated: 2021/03/04 17:01:43 by sbecker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,41 +26,53 @@ static inline void	put_forks(t_philosopher *philosopher)
 	sem_post(philosopher->forks_semaphore);
 }
 
-static inline void	philosopher_sleep(t_philosopher *philosopher)
-{
-	philosopher_log(philosopher, "is sleeping");
-	ms_usleep(philosopher->conf->time_to_sleep);
-}
-
-static inline void	philosopher_eat(t_philosopher *philosopher)
+static inline void	philosopher_eat(t_philosopher *philosopher,
+								size_t *eat_times)
 {
 	take_forks(philosopher);
-	++(philosopher->eating_n_times);
+	++(*eat_times);
+	sem_wait(philosopher->last_time_eating_semaphore);
 	philosopher->last_time_eating = get_current_time();
+	sem_post(philosopher->last_time_eating_semaphore);
 	philosopher_log(philosopher, "is eating");
 	ms_usleep(philosopher->conf->time_to_eat);
 	put_forks(philosopher);
 }
 
+static inline int	is_eat_required_times(t_philosopher *philosopher,
+		size_t eat_times)
+{
+	if (philosopher->conf->is_philosophers_must_eat_n_times == FALSE)
+		return (FALSE);
+	if (eat_times == philosopher->conf->philosopher_must_eat_times)
+		return (TRUE);
+	return (FALSE);
+}
+
 void				*philosopher_live(void *v_philosopher)
 {
 	t_philosopher	*philosopher;
-	int				*exit;
+	size_t			eat_times;
 
+	eat_times = 0;
 	philosopher = (t_philosopher *)v_philosopher;
-	exit = philosopher->exit;
+	sem_wait(philosopher->last_time_eating_semaphore);
 	philosopher->last_time_eating = get_current_time();
-	while (*exit == FALSE && philosopher->is_eat_n_times == FALSE)
+	sem_post(philosopher->last_time_eating_semaphore);
+	while (TRUE)
 	{
+		if (is_should_exit(philosopher))
+			return (NULL);
 		philosopher_log(philosopher, "is thinking");
-		philosopher_eat(philosopher);
-		if (philosopher->conf->is_philosophers_must_eat_n_times == TRUE)
-			if (is_philosopher_eat_n_times(philosopher))
-			{
-				philosopher->is_eat_n_times = TRUE;
-				return (NULL);
-			}
-		philosopher_sleep(philosopher);
+		philosopher_eat(philosopher, &eat_times);
+		if (is_eat_required_times(philosopher, eat_times))
+		{
+			sem_wait(philosopher->is_eaten_given_times_semaphore);
+			philosopher->is_eaten_given_times = TRUE;
+			sem_post(philosopher->is_eaten_given_times_semaphore);
+			return (NULL);
+		}
+		philosopher_log(philosopher, "is sleeping");
+		ms_usleep(philosopher->conf->time_to_sleep);
 	}
-	return (NULL);
 }
