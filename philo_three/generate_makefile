@@ -11,7 +11,7 @@ PHILO_SUB = {
         "string_len.c",
         "string_to_int.c",
         "timeval_into_size_t.c",
-        "upgraded_usleep.c",
+        "ms_usleep.c",
         "ft_strcpy.c",
         "numlen.c",
         "mem_help.c",
@@ -30,7 +30,7 @@ PHILOSOPHERS = {
         "logging.c",
         "main.c",
         "philosopher_live.c",
-		"philosopher_die.c",
+		"philosopher_utilities.c",
 		"clean_all.c",
 		"setup_philosophers.c"
         ],

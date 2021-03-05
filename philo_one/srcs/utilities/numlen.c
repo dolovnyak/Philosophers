@@ -12,7 +12,7 @@
 
 #include "philosophers.h"
 
-inline size_t	numlen(int num)
+inline size_t	numlen(size_t num)
 {
 	size_t	i;
 

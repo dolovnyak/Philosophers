@@ -67,7 +67,7 @@ void						*ft_memset(void *b, int c, size_t len);
 void						ft_bzero(void *s, size_t n);
 char						*ft_strcpy(char *dst, const char *src);
 void						copy_size_t_to_string(char *string, size_t num);
-size_t						numlen(int num);
+size_t						numlen(size_t num);
 void						philosopher_die(t_philosopher *philosopher);
 void						clean_all(t_conf *conf,
 		t_philosopher *philosophers);
