@@ -34,12 +34,13 @@ static int	run_philosopher(t_philosopher *philosopher)
 	{
 		ms_usleep(1);
 		if (is_philosopher_die(philosopher))
-			exit(3);
+			exit((int)philosopher->number);
 		if (is_philosopher_eaten_required_times(philosopher))
-			exit(4);
+			exit(0);
 	}
 }
 
+#include <stdio.h>
 static void	kill_philosophers(t_philosopher *philosophers,
 		size_t philosophers_num)
 {
@@ -53,20 +54,17 @@ static void	kill_philosophers(t_philosopher *philosophers,
 static void	monitor_philosophers(t_philosopher *philosophers, t_conf *conf)
 {
 	size_t	i;
-	int		status;
+	int		philosopher_number;
 
 	ms_usleep(2);
 	i = -1;
 	while (++i < conf->philosophers_num)
 	{
-		waitpid(philosophers[i].pid, &status, 0);
-		if (WEXITSTATUS(status) == 3)
-		{
-			kill_philosophers(philosophers, conf->philosophers_num);
-			return (philosopher_log_die(&(philosophers[i])));
-		}
-		if (i == 3 && WEXITSTATUS(status) == 4)
-			return (kill_philosophers(philosophers, conf->philosophers_num));
+		waitpid(-1, &philosopher_number, 0);
+		if (WEXITSTATUS(philosopher_number) == 0)
+			continue;
+		kill_philosophers(philosophers, conf->philosophers_num);
+		return (philosopher_log_die(&(philosophers[WEXITSTATUS(philosopher_number) - 1])));
 	}
 }
 
