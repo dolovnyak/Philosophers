@@ -1,0 +1,22 @@
+  
+name: build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: macos-10.15
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: make philo_one
+      run: make -C philo_one
+    - name: make philo_two
+      run: make -C philo_two
+    - name: make philo_three
+      run: make -C philo_three
