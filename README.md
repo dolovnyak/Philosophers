@@ -2,7 +2,7 @@
 
 ## MacOS - ![Build](https://github.com/dolovnyak/Philosophers/actions/workflows/c-cpp.yml/badge.svg?branch=master)
 
-Three tasks that teach how to work with mutexes, semaphores and forks.
+Three tasks that teach how to work with mutexes, semaphores and processes.
 ------------
 
 Common rules:
